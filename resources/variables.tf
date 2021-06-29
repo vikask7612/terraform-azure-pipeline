@@ -5,5 +5,5 @@ variable "resource_group_name" {
 
 variable "location" {
   type        = string
-  description = "Default resources location"
+  description = "Default Resources location"
 }
