@@ -1,64 +1,69 @@
-# trigger:
-# - master
+trigger: main
+pr: none
 
 pool:
   vmImage: 'ubuntu-latest'
 
 
+parameters:
+  - name: resourceGroup
+    displayName: Resource Group
+    type: string
+    default: 'rg-eastus-terraform-02'
+    values:
+    - rg-eastus-terraform-02
+    - rg-eastus-terraform-01
+  - name: networkname
+    displayName: Resource Location
+    type: string
+    default: 'eastus'
+    value:
+    - westus
+    - eastus
+
 steps:
+- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
+  displayName: 'terraform-stage'
+  inputs:
+    TemplatePath: resources
+    Arguments: init
+    InstallTerraform: true
+    UseAzureSub: true
+    ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
+    ManageState: true
+    SpecifyStorageAccount: true
+    StorageAccountResourceGroup: 'rg-test-eastus-01'
+    StorageAccountRM: stgtesteastus01
+    StorageContainerName: tfstate
 
-- task: TerraformInstaller@0
-  displayName: install Terraform v0.12.28
+steps:
+- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
+  displayName: 'terraform-apply'
   inputs:
-    terraformVersion: '0.12.28'
+    TemplatePath: resources
+    Arguments: apply
+    InstallTerraform: true
+    UseAzureSub: true
+    ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
+    ManageState: true
+    SpecifyStorageAccount: true
+    StorageAccountResourceGroup: 'rg-test-eastus-01'
+    StorageAccountRM: stgtesteastus01
+    StorageContainerName: tfstate
+    InitArguments: '-auto-approve'
 
-- task: TerraformTaskV1@0
-  displayName: terraform init
+steps:
+- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
+  displayName: 'terraform-plan'
   inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/_vikask7612_terraform-azure-pipeline/resources/'
-    backendServiceArm: ''
-    backendAzureRmResourceGroupName: 'rg-test-eastus-01'
-    backendAzureRmStorageAccountName: 'stgtesteastus01'
-    backendAzureRmContainerName: 'tfstate'
-    backendAzureRmKey: 'test.tfstate'
-
-- task: TerraformTaskV1@0
-  displayName: terraform plan -out=tfplan
-  inputs:
-    provider: 'azurerm'
-    command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/_vikask7612_terraform-azure-pipeline/resources'
-    commandOptions: '-out=tfplan'
-    # commandOptions: '-detailed-exitcode -out=tfplan'
-    environmentServiceNameAzureRM: '$(subscription)'
-
-- task: PowerShell@2
-  displayName: detect any terraform change
-  inputs:
-    workingDirectory: '$(System.DefaultWorkingDirectory)/_vikask7612_terraform-azure-pipeline/resources'
-    targetType: 'inline'
-    script: |
-      # Write-Host "LASTEXITCODE : $LASTEXITCODE"
-      $plan = $(terraform show -json tfplan | ConvertFrom-Json)
-      $actions = $plan.resource_changes.change.actions
-      Write-Host "Terraform actions : $actions"
-      if (($actions -contains 'create') -or ($actions -contains 'delete') -or ($actions -contains 'update'))
-      {
-        Write-Host "Terraform will perform the following actions : $actions"
-        Write-Host "##vso[task.setvariable variable=anyTfChanges;]true"
-      }
-      else
-      {
-        Write-Host "There is no change detected in Terraform tfplan file"
-      }
-- task: TerraformTaskV1@0
-  displayName: terraform apply tfplan
-  condition: eq(variables.anyTfChanges, true)
-  inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/_vikask7612_terraform-azure-pipeline/resources'
-    commandOptions: 'tfplan'
-    environmentServiceNameAzureRM: '$(subscription)'
+    TemplatePath: resources
+    Arguments: plan
+    InstallTerraform: true
+    UseAzureSub: true
+    ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
+    ManageState: true
+    SpecifyStorageAccount: true
+    StorageAccountResourceGroup: 'rg-test-eastus-01'
+    StorageAccountRM: stgtesteastus01
+    StorageContainerName: tfstate
+    InitArguments: '-input=true -var="${{ parameters.resourceGroup }}" -var="${{ parameters.networkname }}"'
