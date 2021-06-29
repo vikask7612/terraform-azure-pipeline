@@ -1,4 +1,4 @@
-trigger: main
+trigger: master
 pr: none
 
 pool:
@@ -17,7 +17,7 @@ parameters:
     displayName: Resource Location
     type: string
     default: 'eastus'
-    value:
+    values:
     - westus
     - eastus
 
@@ -36,7 +36,7 @@ steps:
     StorageAccountRM: stgtesteastus01
     StorageContainerName: tfstate
 
-steps:
+
 - task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
   displayName: 'terraform-apply'
   inputs:
@@ -52,7 +52,6 @@ steps:
     StorageContainerName: tfstate
     InitArguments: '-auto-approve'
 
-steps:
 - task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
   displayName: 'terraform-plan'
   inputs:
