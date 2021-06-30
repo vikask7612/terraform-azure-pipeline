@@ -39,7 +39,7 @@ parameters:
 name: my-test-job
 
 stages :
-  - stage: init-validate
+  - stage: initvalidate
     jobs:
     - job: Teraform_init
       displayName: Terraform init
@@ -81,9 +81,9 @@ stages :
            command: 'validate'
            workingDirectory: '$(System.DefaultWorkingDirectory)/resources/'
 
-  - stage: init-plan        
-    dependsOn: [init-validate]
-    condition: succeeded('init-validate')
+  - stage: initplan        
+    dependsOn: [initvalidate]
+    condition: succeeded('initvalidate')
     jobs:
       - job: terraform_plan
         steps:
@@ -113,9 +113,9 @@ stages :
            backendAzureRmContainerName: 'tfstate'
            backendAzureRmKey: 'terraform.tfstate'
 
-  - stage: init-apply
-    dependsOn: [init-plan]
-    condition: succeeded('init-plan')
+  - stage: initplan
+    dependsOn: [initplan]
+    condition: succeeded('iinitplan')
     jobs:
       - job: terraform_apply
         steps:
