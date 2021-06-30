@@ -1,4 +1,4 @@
-variable "resource_group_name" {
+variable "resourceGroup" {
   type        = string
   description = "Storage account name"
 }
@@ -15,7 +15,7 @@ variable "address" {
   default     = ["10.0.0.0/16"]
 }
 
-variable "virtualnet" {
+variable "networkname" {
   type        = string
   description = "Virtual network name"
 }
@@ -29,4 +29,14 @@ variable "addressprefix" {
   type        = list(string)
   description = "Default Address"
   default     = ["10.0.1.0/24"]
+}
+
+variable "vmName" {
+  type        = string
+  description = "Virtual machine name"
+}
+
+variable "vmSize" {
+  type        = string
+  description = "Virtual machine size"
 }
