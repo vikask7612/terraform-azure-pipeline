@@ -36,6 +36,10 @@ parameters:
       - "vm-eastus-01"
       - "vm-eastus-02"
 
+
+variables:
+ GLOBAL_TERRAFORM_SUBSCRIPTION_ENV_VAR: $(terraform-subscription)
+
 name: my-test-job
 
 stages :
@@ -46,7 +50,7 @@ stages :
       steps:
         - task: AzureCLI@2
           inputs:
-           azureSubscription: 'Azure subscription 1 $(terraform-subscription)'
+           azureSubscription: 'Azure subscription 1 $env:TERRAFORM_SUBSCRIPTION_ENV_VAR'
            scriptType: 'bash'
            scriptLocation: 'inlineScript'
            inlineScript: |
@@ -67,7 +71,7 @@ stages :
            InstallTerraform: true
            UseAzureSub: true
            ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
-           ConnectedServiceNameARM: 'Azure subscription 1 $(terraform-subscription)'
+           ConnectedServiceNameARM: 'Azure subscription 1 $env:TERRAFORM_SUBSCRIPTION_ENV_VAR'
            ManageState: true
            SpecifyStorageAccount: true
            StorageAccountResourceGroup: 'rg-test-eastus-01'
@@ -93,7 +97,7 @@ stages :
            InstallTerraform: true
            UseAzureSub: true
            ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
-           ConnectedServiceNameARM: 'Azure subscription 1 $(terraform-subscription)'
+           ConnectedServiceNameARM: 'Azure subscription 1 $env:TERRAFORM_SUBSCRIPTION_ENV_VAR'
            ManageState: true
            SpecifyStorageAccount: true
            StorageAccountResourceGroup: 'rg-test-eastus-01'
@@ -125,7 +129,7 @@ stages :
            InstallTerraform: true
            UseAzureSub: true
            ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
-           ConnectedServiceNameARM: 'Azure subscription 1 $(terraform-subscription)'
+           ConnectedServiceNameARM: 'Azure subscription 1 $env:TERRAFORM_SUBSCRIPTION_ENV_VAR'
            ManageState: true
            SpecifyStorageAccount: true
            StorageAccountResourceGroup: 'rg-test-eastus-01'
