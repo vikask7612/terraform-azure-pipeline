@@ -21,18 +21,24 @@ parameters:
     - westus
     - eastus
 
-steps:
-- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
-  displayName: 'terraform-stage'
-  inputs:
-    TemplatePath: resources
-    Arguments: init
-    InstallTerraform: true
-    UseAzureSub: true
-    ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
-    ManageState: true
-    SpecifyStorageAccount: true
-    StorageAccountResourceGroup: 'rg-test-eastus-01'
-    StorageAccountRM: stgtesteastus01
-    StorageContainerName: tfstate
+name: my-test-job
+
+jobs:
+- job: Teraform_init
+  displayName: Terraform init
+
+  steps:
+  - task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
+    displayName: 'terraform-stage'
+    inputs:
+      TemplatePath: resources
+      Arguments: init
+      InstallTerraform: true
+      UseAzureSub: true
+      ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
+      ManageState: true
+      SpecifyStorageAccount: true
+      StorageAccountResourceGroup: 'rg-test-eastus-01'
+      StorageAccountRM: stgtesteastus01
+      StorageContainerName: tfstate
 
