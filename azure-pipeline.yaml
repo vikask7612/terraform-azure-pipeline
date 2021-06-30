@@ -36,33 +36,3 @@ steps:
     StorageAccountRM: stgtesteastus01
     StorageContainerName: tfstate
 
-
-- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
-  displayName: 'terraform-apply'
-  inputs:
-    TemplatePath: resources
-    Arguments: apply
-    InstallTerraform: true
-    UseAzureSub: true
-    ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
-    ManageState: true
-    SpecifyStorageAccount: true
-    StorageAccountResourceGroup: 'rg-test-eastus-01'
-    StorageAccountRM: stgtesteastus01
-    StorageContainerName: tfstate
-    InitArguments: '-auto-approve'
-
-- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
-  displayName: 'terraform-plan'
-  inputs:
-    TemplatePath: resources
-    Arguments: plan
-    InstallTerraform: true
-    UseAzureSub: true
-    ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
-    ManageState: true
-    SpecifyStorageAccount: true
-    StorageAccountResourceGroup: 'rg-test-eastus-01'
-    StorageAccountRM: stgtesteastus01
-    StorageContainerName: tfstate
-    InitArguments: '-input=true -var="${{ parameters.resourceGroup }}" -var="${{ parameters.networkname }}"'
