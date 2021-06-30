@@ -86,7 +86,7 @@ stages :
     jobs:
       - job: terraform_plan
         steps:
-                - task: Terraform@2
+        - task: Terraform@2
           inputs:
            TemplatePath: '$$(System.DefaultWorkingDirectory)/resources/'
            Arguments: 'init'
