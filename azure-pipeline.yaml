@@ -60,20 +60,19 @@ stages :
            failOnStandardError: true 
            workingDirectory: $(System.DefaultWorkingDirectory)/resources/
 
-        - task: TerraformInstaller@0
+        - task: Terraform@2
           inputs:
-           terraformVersion: 'latest'
-  
-        - task: TerraformTaskV2@2
-          inputs:
-           provider: 'azurerm'
-           command: 'init'
-           workingDirectory: '$(System.DefaultWorkingDirectory)/resources/'
-           backendServiceArm: 'Azure subscription 1 $(terraform-subscription)'
-           backendAzureRmResourceGroupName: 'rg-test-eastus-01'
-           backendAzureRmStorageAccountName: 'stgtesteastus01'
-           backendAzureRmContainerName: 'tfstate'
-           backendAzureRmKey: 'terraform.tfstate'
+           TemplatePath: '$$(System.DefaultWorkingDirectory)/resources/'
+           Arguments: 'init'
+           InstallTerraform: true
+           UseAzureSub: true
+           ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+           ConnectedServiceNameARM: 'Azure subscription 1 $(terraform-subscription)'
+           ManageState: true
+           SpecifyStorageAccount: true
+           StorageAccountResourceGroup: 'rg-test-eastus-01'
+           StorageAccountRM: 'stgtesteastus01'
+           StorageContainerName: 'tfstate'
 
         - task: TerraformTaskV2@2
           inputs:
@@ -87,19 +86,19 @@ stages :
     jobs:
       - job: terraform_plan
         steps:
-        - task: TerraformInstaller@0
+                - task: Terraform@2
           inputs:
-           terraformVersion: 'latest'
-        - task: TerraformTaskV2@2
-          inputs:
-           provider: 'azurerm'
-           command: 'init'
-           workingDirectory: '$(System.DefaultWorkingDirectory)/resources/'
-           backendServiceArm: 'Azure subscription 1 $(terraform-subscription)'
-           backendAzureRmResourceGroupName: 'rg-test-eastus-01'
-           backendAzureRmStorageAccountName: 'stgtesteastus01'
-           backendAzureRmContainerName: 'tfstate'
-           backendAzureRmKey: 'terraform.tfstate'
+           TemplatePath: '$$(System.DefaultWorkingDirectory)/resources/'
+           Arguments: 'init'
+           InstallTerraform: true
+           UseAzureSub: true
+           ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+           ConnectedServiceNameARM: 'Azure subscription 1 $(terraform-subscription)'
+           ManageState: true
+           SpecifyStorageAccount: true
+           StorageAccountResourceGroup: 'rg-test-eastus-01'
+           StorageAccountRM: 'stgtesteastus01'
+           StorageContainerName: 'tfstate'
 
         - task: TerraformTaskV2@2
           inputs:
@@ -113,25 +112,25 @@ stages :
            backendAzureRmContainerName: 'tfstate'
            backendAzureRmKey: 'terraform.tfstate'
 
-  - stage: initplan
+  - stage: initapply
     dependsOn: [initplan]
     condition: succeeded('iinitplan')
     jobs:
       - job: terraform_apply
         steps:
-        - task: TerraformInstaller@0
+        - task: Terraform@2
           inputs:
-           terraformVersion: 'latest'
-        - task: TerraformTaskV2@2
-          inputs:
-           provider: 'azurerm'
-           command: 'init'
-           workingDirectory: '$(System.DefaultWorkingDirectory)/resources/'
-           backendServiceArm: 'Azure subscription 1 $(terraform-subscription)'
-           backendAzureRmResourceGroupName: 'rg-test-eastus-01'
-           backendAzureRmStorageAccountName: 'stgtesteastus01'
-           backendAzureRmContainerName: 'tfstate'
-           backendAzureRmKey: 'terraform.tfstate'
+           TemplatePath: '$$(System.DefaultWorkingDirectory)/resources/'
+           Arguments: 'init'
+           InstallTerraform: true
+           UseAzureSub: true
+           ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+           ConnectedServiceNameARM: 'Azure subscription 1 $(terraform-subscription)'
+           ManageState: true
+           SpecifyStorageAccount: true
+           StorageAccountResourceGroup: 'rg-test-eastus-01'
+           StorageAccountRM: 'stgtesteastus01'
+           StorageContainerName: 'tfstate'
         - task: TerraformTaskV2@2
           inputs:
            provider: 'azurerm'
