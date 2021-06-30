@@ -40,3 +40,19 @@ variable "vmSize" {
   type        = string
   description = "Virtual machine size"
 }
+
+variable "failover_location" {
+  type        = string
+  description = "Failover location for cosmos DB"
+  default     = "westus"
+}
+
+variable "cosmosDB" {
+  type        = string
+  description = "Cosmos DB name"
+}
+
+variable "dbKind" {
+  type        = string
+  description = "Cosmos DB kind"
+}
