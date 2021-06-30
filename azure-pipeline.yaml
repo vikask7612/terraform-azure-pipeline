@@ -50,7 +50,7 @@ stages :
       steps:
         - task: AzureCLI@2
           inputs:
-           azureSubscription: 'Azure subscription 1 $env:TERRAFORM_SUBSCRIPTION_ENV_VAR'
+           azureSubscription: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
            scriptType: 'bash'
            scriptLocation: 'inlineScript'
            inlineScript: |
@@ -71,7 +71,7 @@ stages :
            InstallTerraform: true
            UseAzureSub: true
            ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
-           ConnectedServiceNameARM: 'Azure subscription 1 $env:TERRAFORM_SUBSCRIPTION_ENV_VAR'
+           ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
            ManageState: true
            SpecifyStorageAccount: true
            StorageAccountResourceGroup: 'rg-test-eastus-01'
@@ -97,7 +97,7 @@ stages :
            InstallTerraform: true
            UseAzureSub: true
            ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
-           ConnectedServiceNameARM: 'Azure subscription 1 $env:TERRAFORM_SUBSCRIPTION_ENV_VAR'
+           ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
            ManageState: true
            SpecifyStorageAccount: true
            StorageAccountResourceGroup: 'rg-test-eastus-01'
@@ -129,7 +129,7 @@ stages :
            InstallTerraform: true
            UseAzureSub: true
            ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
-           ConnectedServiceNameARM: 'Azure subscription 1 $env:TERRAFORM_SUBSCRIPTION_ENV_VAR'
+           ConnectedServiceNameARM: 'Azure subscription 1 (11fe55fc-d6c0-4abf-afc1-2bcb431c8cc8)'
            ManageState: true
            SpecifyStorageAccount: true
            StorageAccountResourceGroup: 'rg-test-eastus-01'
