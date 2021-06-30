@@ -40,6 +40,9 @@ jobs:
       # Propagate from Azure CLI context
       $env:ARM_TENANT_ID       ??= $(az account show --query tenantId -o tsv)
       $env:ARM_SUBSCRIPTION_ID ??= $(az account show --query id -o tsv)
+     addSpnToEnvironment: true
+     useGlobalConfig: true
+     failOnStandardError: true 
      workingDirectory: $(System.DefaultWorkingDirectory)/resources 
 
   - task: TerraformInstaller@0
